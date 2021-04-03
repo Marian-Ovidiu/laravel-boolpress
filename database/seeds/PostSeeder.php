@@ -4,8 +4,9 @@ use Illuminate\Database\Seeder;
 use Faker\Generator as Faker;
 use App\Author;
 use App\AuthorDetail;
+use App\Post;
 
-class AuthorSeeder extends Seeder
+class PostSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -27,9 +28,14 @@ class AuthorSeeder extends Seeder
             $authorDetail->bio = $faker->text();
             $authorDetail->website = $faker->url();
             $authorDetail->pic = 'https://picsum.photos/seed/'. rand(0, 1000) . '/200/300';
-
             $author->detail()->save($authorDetail);
 
+            for ($x = 0; $x < rand(2, 5); $x++) {
+                $post = new Post();
+                $post->title = $faker->text(20);
+                $post->body = $faker-> text(1000);
+                $author->posts()->save($post);
+            }
         }
 
     }
