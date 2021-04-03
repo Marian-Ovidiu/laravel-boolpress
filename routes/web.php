@@ -22,3 +22,8 @@ Auth::routes();
 Route::get('/home', 'HomeController@index')->name('home');
 
 Route::get('/author', 'AuthorController@index');
+
+Route::resource('post', PostController::class);
+
+Route::resource('comment', CommentController::class);
+
