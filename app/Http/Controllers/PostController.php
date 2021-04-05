@@ -6,6 +6,10 @@ use Illuminate\Http\Request;
 use App\Post;
 use App\Author;
 use App\Tag;
+use App\Mail\PostCreated;
+use App\Mail\TagsUsed;
+use Illuminate\Support\Facades\Mail;
+
 
 class PostController extends Controller
 {
@@ -56,6 +60,14 @@ class PostController extends Controller
         $post->fill($data);
         $post->save();
         $post->tags()->attach($finalTags);
+
+        $storedPost = Post::OrderBy('id', 'desc')->first();
+
+        $tagMail = new TagsUsed($storedPost->tags);
+        Mail::to('bibig82275@tlhao86.com')->send($tagMail);
+
+        $mailableObject = new PostCreated($storedPost);
+        Mail::to('bibig82275@tlhao86.com')->send($mailableObject);
 
         return redirect()->route('post.index');
 
